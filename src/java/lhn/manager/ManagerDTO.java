@@ -16,14 +16,15 @@ public class ManagerDTO {
     private int phone;
     private String storeName;
     private String storeAddress;
-
-    public ManagerDTO(String personalID, String fullname, String password, int phone, String storeName, String storeAddress) {
+private String key;
+    public ManagerDTO(String personalID, String fullname, String password, int phone, String storeName, String storeAddress, String key) {
         this.personalID = personalID;
         this.fullname = fullname;
         this.password = password;
         this.phone = phone;
         this.storeName = storeName;
         this.storeAddress = storeAddress;
+        this.key=key;
     }
     public ManagerDTO() {
         this.personalID = "";
@@ -32,6 +33,7 @@ public class ManagerDTO {
         this.phone = 0;
         this.storeName = "";
         this.storeAddress = "";
+        key="";
     }
 
     public String getPersonalID() {
@@ -66,6 +68,8 @@ public class ManagerDTO {
         this.phone = phone;
     }
 
+   
+ 
     public String getStoreName() {
         return storeName;
     }
@@ -80,6 +84,14 @@ public class ManagerDTO {
 
     public void setStoreAddress(String storeAddress) {
         this.storeAddress = storeAddress;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
     
 }

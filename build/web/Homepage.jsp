@@ -14,7 +14,7 @@
     </head>
     <body>
         <%
-            ManagerDTO manager =(ManagerDTO) session.getAttribute("Manager");
+            ManagerDTO manager =(ManagerDTO) session.getAttribute("MANAGER");
             if(manager==null){
                 request.setAttribute("Error_Login", "Please login first");
                 request.getRequestDispatcher("LoginPage.jsp").forward(request, response);

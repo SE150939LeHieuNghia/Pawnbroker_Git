@@ -20,7 +20,7 @@ public class MainController extends HttpServlet {
 
     private final String ERROR="LoginPage.jsp";
     private final String LOGIN="LoginController";
-    private final String CREATE="CreateBill.jsp";
+    private final String CREATE="CreateUser.jsp";
     private final String FORGOT="ForgotPass.jsp";
     private final String GETKEY="GetKeyController";
     private final String COMPANY="CompanyPage.jsp";
@@ -52,7 +52,9 @@ public class MainController extends HttpServlet {
                 case "Company Page":
                     url=COMPANY;
                     break;
-                    
+                case "Create new account"    :
+                    url="CreateNewUserController";
+                    break;
                 default:
                      HttpSession session=request.getSession();
                      session.setAttribute("ERROR", "Funtion doesn't exsit");

@@ -24,8 +24,8 @@ public class KeyDAO {
     private static final String ALPHA_NUMERIC = alpha + alphaUpperCase + digits;
     private static Random generator = new Random();
     private static final String ADD = "INSERT INTO tblKey (confirmKey,statusKey) values (?, ?) ";
-    private static final String CHECK = "SELECT * FROM tblKey WHERE confirmKey= ? ";
-
+    private static final String CHECK = "SELECT statusKey FROM tblKey WHERE confirmKey = ? ";
+    private static final String UPDATE = "UPDATE tblKey SET statusKey = 'True' WHERE confirmKey = ? ";
     public String randomAlphaNumeric(int numberOfCharactor) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < numberOfCharactor; i++) {
@@ -40,7 +40,7 @@ public class KeyDAO {
         return generator.nextInt((max - min) + 1) + min;
     }
 
-    public boolean checkKey(String key) throws SQLException {
+    public int checkKey(String key) throws SQLException {
         Connection conn = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -51,7 +51,8 @@ public class KeyDAO {
                 stm.setString(1, key);
                 rs = stm.executeQuery();
                 if (rs.next()) {
-                    return false;
+                   if(rs.getBoolean("statusKey"))return 1;
+                   else return -1;
                 }
             }
         } catch (Exception e) {
@@ -67,7 +68,7 @@ public class KeyDAO {
                 conn.close();
             }
         }
-        return true;
+        return 0;
     }
 
     public KeyDTO getKeyRandom() throws SQLException {
@@ -78,7 +79,7 @@ public class KeyDAO {
             conn = DBUtils.getConnection();
             if (conn != null) {
                 do{code = randomAlphaNumeric(8);
-                }while(!checkKey(code));
+                }while(checkKey(code)==1);
                 if (code != null) {
                     KeyDTO key = new KeyDTO();
                     key.setKey(code);
@@ -102,5 +103,23 @@ public class KeyDAO {
             }
         }
         return null;
+    }
+    public boolean updateStatus(String key) throws SQLException{
+        Connection conn=null;
+        PreparedStatement stm=null;
+        try{
+            conn=DBUtils.getConnection();
+            if(conn!=null){
+                stm=conn.prepareStatement(UPDATE);
+                stm.setString(1, key);
+                if(stm.executeUpdate()>0) return true;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            if(stm!=null) stm.close();
+            if(conn!=null) conn.close();
+        }
+        return false;
     }
 }
